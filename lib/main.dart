@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fluttphotos/model/photo.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
@@ -47,7 +48,17 @@ class _MyHomePageState extends State<MyHomePage> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             return snapshot.connectionState == ConnectionState.waiting
                 ? const Center(child: CircularProgressIndicator())
-                : Text("${snapshot.data}");
+                : ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      PhotoModel photo =
+                          PhotoModel.fromJson(snapshot.data[index]);
+                      return ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(photo.thumbnailUrl!),
+                          ),
+                          title: Text("${photo.title}"));
+                    });
           },
         ));
   }
