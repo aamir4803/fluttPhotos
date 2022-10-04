@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttphotos/model/photo.dart';
 import 'package:http/http.dart' as http;
@@ -44,23 +45,30 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: FutureBuilder(
-          future: getPhotos(), // a previously-obtained Future<String> or null
+          future: getPhotos(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             return snapshot.connectionState == ConnectionState.waiting
                 ? const Center(child: CircularProgressIndicator())
-                : ListView.builder(
+                : ListView.separated(
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       PhotoModel photo =
                           PhotoModel.fromJson(snapshot.data[index]);
-                      return ListTile(
-                          leading: CircleAvatar(
-                            radius: 40,
-                            backgroundImage:
-                                NetworkImage("${photo.thumbnailUrl}.jpg"),
-                          ),
-                          title: Text("${photo.title}"));
-                    });
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  NetworkImage("${photo.thumbnailUrl}.jpg"),
+                            ),
+                            title: Text("${photo.title}")),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Divider();
+                    },
+                  );
           },
         ));
   }
