@@ -55,7 +55,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           PhotoModel.fromJson(snapshot.data[index]);
                       return ListTile(
                           leading: CircleAvatar(
-                            backgroundImage: NetworkImage(photo.thumbnailUrl!),
+                            radius: 40,
+                            backgroundImage:
+                                NetworkImage("${photo.thumbnailUrl}.jpg"),
                           ),
                           title: Text("${photo.title}"));
                     });
